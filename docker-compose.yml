@@ -1,0 +1,10 @@
+services:
+  telegram-bot:
+    build: .
+    container_name: easy_youtube_mp3_bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./bot_database.sqlite3:/app/bot_database.sqlite3
+      - ./downloads:/app/downloads

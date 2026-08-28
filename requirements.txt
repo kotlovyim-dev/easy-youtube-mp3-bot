@@ -1,0 +1,6 @@
+aiogram>=3.14.0
+yt-dlp>=2024.10.0
+aiosqlite>=0.20.0
+python-dotenv>=1.0.0
+static-ffmpeg>=2.5
+aiofiles>=24.1.0
