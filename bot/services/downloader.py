@@ -55,6 +55,16 @@ class DownloadResult:
             logger.error("Error cleaning up media files: %s", err)
 
 
+def _network_opts() -> Dict[str, Any]:
+    """yt-dlp options that get requests past YouTube's bot check."""
+    opts: Dict[str, Any] = {"js_runtimes": {"node": {}}}
+    if config.YTDLP_COOKIES:
+        opts["cookiefile"] = config.YTDLP_COOKIES
+    if config.YTDLP_PROXY:
+        opts["proxy"] = config.YTDLP_PROXY
+    return opts
+
+
 class Downloader:
     def __init__(self, downloads_dir: Path = config.DOWNLOADS_DIR):
         self.downloads_dir = downloads_dir
@@ -74,7 +84,7 @@ class Downloader:
         }
 
         try:
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            with yt_dlp.YoutubeDL({**_network_opts(), **ydl_opts}) as ydl:
                 info = ydl.extract_info(url, download=False)
                 if not info:
                     return None
@@ -136,7 +146,7 @@ class Downloader:
             "max_filesize": config.MAX_FILE_SIZE_MB * 1024 * 1024,
         }
 
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL({**_network_opts(), **ydl_opts}) as ydl:
             info = ydl.extract_info(url, download=True)
             if not info:
                 raise ValueError("Could not extract media info or download audio.")
@@ -232,7 +242,7 @@ class Downloader:
             "max_filesize": config.MAX_FILE_SIZE_MB * 1024 * 1024,
         }
 
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        with yt_dlp.YoutubeDL({**_network_opts(), **ydl_opts}) as ydl:
             info = ydl.extract_info(url, download=True)
             if not info:
                 raise ValueError("Could not extract media info or download video.")

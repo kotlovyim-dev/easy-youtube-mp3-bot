@@ -14,6 +14,10 @@ class Config:
     MAX_FILE_SIZE_MB: int = int(os.getenv("MAX_FILE_SIZE_MB", "50"))
     DATABASE_PATH: str = os.getenv("DATABASE_PATH", str(BASE_DIR / "bot_database.sqlite3"))
     DOWNLOADS_DIR: Path = BASE_DIR / os.getenv("DOWNLOADS_DIR", "downloads")
+    # YouTube often refuses datacenter IPs. Either a cookies.txt (Netscape format) of a
+    # signed-in session or a proxy lets yt-dlp through; both are optional.
+    YTDLP_COOKIES: str = os.getenv("YTDLP_COOKIES", "")
+    YTDLP_PROXY: str = os.getenv("YTDLP_PROXY", "")
 
     def validate(self) -> None:
         if not self.BOT_TOKEN or self.BOT_TOKEN == "123456789:ABCdefGHIjklMNOpqrSTUvwxYZ":

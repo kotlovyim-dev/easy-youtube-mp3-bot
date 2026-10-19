@@ -1,0 +1,13 @@
+[build]
+dockerfile = "Dockerfile"
+
+[services.bot]
+command = "python main.py"
+volumes = ["data:/data"]
+
+[env]
+BOT_TOKEN        = {}
+MAX_FILE_SIZE_MB = {}
+DATABASE_PATH    = { template = "/data/bot_database.sqlite3" }
+DOWNLOADS_DIR    = { template = "/data/downloads" }
+YTDLP_COOKIES    = { template = "/data/cookies.txt" }
